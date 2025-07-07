@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Le Petit Programmeur - École de codage innovante pour enfants">
+  <title>Le Petit Programmeur | Éveil numérique dès le plus jeune âge</title>
+
+  <!-- Preload critical resources -->
+  <link rel="preload" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" as="style">
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Fredoka+One&display=swap" as="font" crossorigin>
+  <link rel="preload" href="https://cdn.jsdelivr.net/npm/@mdi/font@7.2.96/css/materialdesignicons.min.css" as="style">
+
+  <!-- Favicon -->
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+
+  <style>
+    :root {
+      /* Nouvelle palette de couleurs */
+      --primary: #4361ee;       /* Bleu vif */
+      --primary-light: #a5b4fc; /* Bleu clair */
+      --primary-dark: #3730a3;  /* Bleu foncé */
+      --secondary: #f72585;     /* Rose vif */
+      --accent: #4cc9f0;       /* Cyan */
+      --success: #06d6a0;      /* Vert menthe */
+      --warning: #ffd166;      /* Jaune doré */
+      --dark: #1e1b4b;         /* Bleu nuit */
+      --light: #f8f9fa;        /* Blanc cassé */
+      --gray: #6b7280;         /* Gris moyen */
+      
+      /* Variables utilitaires */
+      --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.12);
+      --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      --shadow-md: 0 10px 15px rgba(0, 0, 0, 0.1);
+      --shadow-lg: 0 20px 25px rgba(0, 0, 0, 0.1);
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+    }
+
+    @font-face {
+      font-family: 'Poppins';
+      font-style: normal;
+      font-weight: 300 700;
+      font-display: swap;
+      src: url(https://fonts.gstatic.com/s/poppins/v20/pxiByp8kv8JHgFVrLDz8Z1xlFQ.woff2) format('woff2');
+    }
+
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Poppins', system-ui, -apple-system, sans-serif;
+      color: var(--dark);
+      background-color: var(--light);
+      line-height: 1.6;
+      overflow-x: hidden;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* Typography */
+    h1, h2, h3, h4 {
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    /* Layout */
+    .container {
+      width: 100%;
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    /* Navigation */
+    .navbar {
+      background-color: rgba(255, 255, 255, 0.98);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      box-shadow: var(--shadow-sm);
+      padding: 1.25rem 0;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      transition: var(--transition);
+    }
+
+    .navbar.scrolled {
+      padding: 0.75rem 0;
+      box-shadow: var(--shadow);
+    }
+
+    .navbar-brand {
+      font-family: 'Fredoka One', cursive;
+      font-weight: 400;
+      color: var(--primary) !important;
+      font-size: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .navbar-brand img {
+      height: 2.5rem;
+      width: auto;
+      transition: var(--transition);
+    }
+
+    .navbar.scrolled .navbar-brand img {
+      height: 2rem;
+    }
+
+    .nav-link {
+      color: var(--dark) !important;
+      font-weight: 500;
+      font-size: 0.9375rem;
+      padding: 0.5rem 1rem !important;
+      margin: 0 0.25rem;
+      position: relative;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .nav-link::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 1rem;
+      width: calc(100% - 2rem);
+      height: 2px;
+      background: var(--primary);
+      transform: scaleX(0);
+      transform-origin: right;
+      transition: transform 0.3s ease;
+    }
+
+    .nav-link:hover::before,
+    .nav-link.active::before {
+      transform: scaleX(1);
+      transform-origin: left;
+    }
+
+    .nav-link:hover {
+      color: var(--primary) !important;
+    }
+
+    .nav-link .mdi {
+      font-size: 1.25rem;
+    }
+
+    /* Hero Section */
+    .hero-section {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 8rem 0 6rem;
+      position: relative;
+      overflow: hidden;
+      background: #006ab3;
+      /*linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);*/
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 640px;
+    }
+
+    .hero-title {
+      font-size: clamp(2.5rem, 6vw, 3.5rem);
+      font-weight: 800;
+      line-height: 1.1;
+      color: white;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-subtitle {
+      font-size: clamp(1rem, 2.5vw, 1.25rem);
+      color: rgba(255, 255, 255, 0.9);
+      margin-bottom: 2.5rem;
+    }
+
+    .hero-image {
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-lg);
+      transform: perspective(1000px) rotateY(-10deg);
+      transition: var(--transition);
+      max-width: 100%;
+      height: auto;
+    }
+
+    .hero-image:hover {
+      transform: perspective(1000px) rotateY(0deg);
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.875rem 2.25rem;
+      border-radius: var(--radius-md);
+      font-weight: 600;
+      transition: var(--transition);
+      gap: 0.5rem;
+    }
+
+    .btn-primary {
+      background-color: var(--secondary);
+      color: white;
+      border: none;
+    }
+
+    .btn-primary:hover {
+      background-color: var(--secondary);
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .btn-outline-light {
+      background-color: transparent;
+      color: white;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .btn-outline-light:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+      border-color: white;
+    }
+
+    /* Responsive */
+    @media (max-width: 992px) {
+      .hero-section {
+        text-align: center;
+        padding: 8rem 0 6rem;
+      }
+      
+      .hero-subtitle {
+        margin-left: auto;
+        margin-right: auto;
+      }
+      
+      .hero-image {
+        margin-top: 3rem;
+        max-width: 80%;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .navbar-brand {
+        font-size: 1.25rem;
+      }
+      
+      .hero-title {
+        font-size: 2.5rem;
+      }
+    }
+
+    /* Méthode card base */
+    .methode-card {
+      cursor: pointer;
+      border: 2.5px solid #e5e7eb;
+      background-color: var(--light);
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s, background-color 0.3s;
+    }
+    .methode-card.active {
+      transform: scale(1.07);
+      z-index: 2;
+    }
+    .methode-card.methode-blue.active {
+      border-color: var(--primary-dark);
+      background-color: #b5c4fa;
+      box-shadow: 0 8px 32px 0 rgba(67, 97, 238, 0.25), 0 0 0 4px var(--primary-light), var(--shadow-md);
+    }
+    .methode-card.methode-pink.active {
+      border-color: var(--secondary);
+      background-color: #ffd1ea;
+      box-shadow: 0 8px 32px 0 rgba(247, 37, 133, 0.18), 0 0 0 4px #ffd1ea, var(--shadow-md);
+    }
+    .methode-card.methode-cyan.active {
+      border-color: var(--accent);
+      background-color: #b2f0fb;
+      box-shadow: 0 8px 32px 0 rgba(76, 201, 240, 0.18), 0 0 0 4px #b2f0fb, var(--shadow-md);
+    }
+    .methode-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      margin-bottom: 0.5rem;
+      font-size: 2rem;
+      color: white;
+    }
+    .methode-blue .methode-icon {
+      background: var(--primary);
+    }
+    .methode-pink .methode-icon {
+      background: var(--secondary);
+    }
+    .methode-cyan .methode-icon {
+      background: var(--accent);
+    }
+
+    /* Équipe card hover effect */
+    #equipe .card {
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s, border-color 0.3s, background-color 0.3s;
+      border: 2px solid #e5e7eb;
+      background-color: #fff;
+    }
+    #equipe .card:hover {
+      background-color: var(--primary-light);
+      border-color: var(--primary);
+      transform: scale(1.04) translateY(-6px);
+      box-shadow: 0 8px 32px 0 rgba(67, 97, 238, 0.18), var(--shadow-md);
+    }
+
+    /* Contact card hover effect */
+    #contact .bg-white {
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s, border-color 0.3s, background-color 0.3s;
+      border: 2px solid #e5e7eb;
+      background-color: #fff;
+    }
+    #contact .bg-white:hover {
+      background-color: var(--primary-light);
+      border-color: var(--primary);
+      transform: scale(1.04) translateY(-6px);
+      box-shadow: 0 8px 32px 0 rgba(67, 97, 238, 0.18), var(--shadow-md);
+    }
+
+    /* Méthode card hover effect */
+    .methode-card.methode-blue:hover {
+      background-color: var(--primary-light);
+      border-color: var(--primary-dark);
+      transform: scale(1.04) translateY(-6px);
+      box-shadow: 0 8px 32px 0 rgba(67, 97, 238, 0.18), var(--shadow-md);
+    }
+    .methode-card.methode-pink:hover {
+      background-color: #ffd1ea;
+      border-color: var(--secondary);
+      transform: scale(1.04) translateY(-6px);
+      box-shadow: 0 8px 32px 0 rgba(247, 37, 133, 0.12), var(--shadow-md);
+    }
+    .methode-card.methode-cyan:hover {
+      background-color: #b2f0fb;
+      border-color: var(--accent);
+      transform: scale(1.04) translateY(-6px);
+      box-shadow: 0 8px 32px 0 rgba(76, 201, 240, 0.12), var(--shadow-md);
+    }
+
+    /* Programmes section beautiful background */
+    #programmes {
+      background: linear-gradient(120deg, var(--primary-light) 0%, #f8fafc 100%);
+      position: relative;
+      z-index: 1;
+    }
+    #programmes .card {
+      border-radius: var(--radius-lg);
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s, border-color 0.3s, background-color 0.3s;
+      border: 2px solid #e5e7eb;
+      background: #fff;
+      box-shadow: var(--shadow-sm);
+    }
+    #programmes .card:hover {
+      background: var(--primary-light);
+      border-color: var(--primary);
+      transform: scale(1.04) translateY(-6px);
+      box-shadow: 0 8px 32px 0 rgba(67, 97, 238, 0.12), var(--shadow-md);
+    }
+    #programmes .card-header {
+      border-top-left-radius: var(--radius-lg) !important;
+      border-top-right-radius: var(--radius-lg) !important;
+      background: linear-gradient(90deg, var(--primary) 60%, var(--secondary) 100%);
+      color: #fff;
+      position: relative;
+      overflow: hidden;
+    }
+    #programmes .card-header.bg-secondary {
+      background: linear-gradient(90deg, var(--secondary) 60%, var(--accent) 100%);
+    }
+    #programmes .card-header.bg-dark {
+      background: linear-gradient(90deg, var(--dark) 60%, var(--primary-dark) 100%);
+    }
+    #programmes .badge {
+      font-size: 0.95rem;
+      padding: 0.5em 1em;
+      border-radius: 2em;
+      background: var(--warning);
+      color: var(--dark);
+      font-weight: 600;
+      box-shadow: 0 2px 8px rgba(255,209,106,0.12);
+    }
+    #programmes .programme-icon-bg {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 90px;
+      height: 90px;
+      margin: 0 auto 1rem auto;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary-light) 0%, #fff 100%);
+      box-shadow: 0 2px 12px rgba(67,97,238,0.08);
+    }
+    #programmes .card-body img {
+      margin-bottom: 0;
+    }
+    #programmes .btn {
+      font-weight: 600;
+      border-radius: var(--radius-md);
+      box-shadow: 0 2px 8px rgba(67,97,238,0.08);
+      transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+    }
+    #programmes .btn:hover {
+      background: var(--primary);
+      color: #fff;
+      box-shadow: 0 4px 16px rgba(67,97,238,0.12);
+    }
+
+    .programme-steps-wrapper {
+      position: relative;
+      margin-bottom: 3rem;
+    }
+    .programme-steps {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 2rem;
+      position: relative;
+      z-index: 2;
+      flex-wrap: wrap;
+    }
+    .programme-step {
+      background: #fff;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-sm);
+      padding: 2rem 1.5rem 1.5rem 1.5rem;
+      flex: 1 1 220px;
+      min-width: 220px;
+      max-width: 320px;
+      text-align: center;
+      position: relative;
+      transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
+      border: 2.5px solid #e5e7eb;
+    }
+    .programme-step:hover {
+      transform: scale(1.05) translateY(-8px);
+      box-shadow: 0 8px 32px 0 rgba(67, 97, 238, 0.12), var(--shadow-md);
+      background: var(--primary-light);
+      border-color: var(--primary);
+    }
+    .programme-step-icon {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 1rem auto;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #f3f4f6 0%, var(--primary-light) 100%);
+      box-shadow: 0 2px 12px rgba(67,97,238,0.08);
+    }
+    .programme-step-icon img {
+      width: 48px;
+      height: 48px;
+      object-fit: contain;
+    }
+    .programme-age {
+      font-size: 1rem;
+      color: var(--primary-dark);
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+    .programme-list {
+      list-style: none;
+      padding: 0;
+      margin: 0 auto;
+      text-align: left;
+      max-width: 220px;
+      font-size: 0.98rem;
+      color: var(--gray);
+    }
+    .programme-list li {
+      margin-bottom: 0.5rem;
+      position: relative;
+      padding-left: 1.5em;
+    }
+    .programme-list li:before {
+      content: '\2713';
+      color: var(--success);
+      position: absolute;
+      left: 0;
+      font-size: 1.1em;
+      top: 0.1em;
+    }
+    .step-blue .programme-step-icon {
+      background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary) 100%);
+    }
+    .step-pink .programme-step-icon {
+      background: linear-gradient(135deg, #ffd1ea 0%, var(--secondary) 100%);
+    }
+    .step-cyan .programme-step-icon {
+      background: linear-gradient(135deg, #b2f0fb 0%, var(--accent) 100%);
+    }
+    .programme-progress-bar {
+      position: absolute;
+      left: 8%;
+      right: 8%;
+      top: 60px;
+      height: 8px;
+      z-index: 1;
+      display: none;
+    }
+    @media (min-width: 992px) {
+      .programme-progress-bar {
+        display: block;
+      }
+      .programme-steps {
+        flex-wrap: nowrap;
+      }
+    }
+    .programme-progress-bar .bar {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      height: 8px;
+      background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 50%, var(--accent) 100%);
+      border-radius: 4px;
+      transform: translateY(-50%);
+      z-index: 1;
+    }
+    .programme-progress-bar .dot {
+      position: absolute;
+      top: 50%;
+      width: 24px;
+      height: 24px;
+      background: #fff;
+      border: 4px solid var(--primary);
+      border-radius: 50%;
+      transform: translateY(-50%);
+      z-index: 2;
+      box-shadow: 0 2px 8px rgba(67,97,238,0.10);
+    }
+    .programme-progress-bar .dot1 { left: 0; border-color: var(--primary); }
+    .programme-progress-bar .dot2 { left: 50%; border-color: var(--secondary); transform: translate(-50%, -50%); }
+    .programme-progress-bar .dot3 { right: 0; border-color: var(--accent); }
+
+    .equipe-img:hover {
+      transform: scale(1.08) translateY(-6px);
+      box-shadow: 0 8px 32px 0 rgba(67, 97, 238, 0.18), var(--shadow-md);
+    }
+  </style>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Fredoka+One&display=swap" rel="stylesheet">
+  
+  <!-- Material Design Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/@mdi/font@7.2.96/css/materialdesignicons.min.css" rel="stylesheet">
+  
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+<!-- Navigation - Avec ajout du lien Contact -->
+<nav class="navbar navbar-expand-lg navbar-light">
+  <div class="container">
+    <a class="navbar-brand" href="#">
+      <img src="img/16370889647467.png" alt="Logo Le Petit Programmeur">
+    
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto align-items-lg-center">
+        <li class="nav-item">
+          <a class="nav-link active" href="#">
+            <span class="mdi mdi-home"></span>
+            Accueil
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#methode">
+            <span class="mdi mdi-school"></span>
+            Méthode
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#programmes">
+            <span class="mdi mdi-book-education"></span>
+            Programmes
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#equipe">
+            <span class="mdi mdi-account-group"></span>
+            Équipe
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#contact">
+            <span class="mdi mdi-email"></span>
+            Contact
+          </a>
+        </li>
+       
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero Section -->
+<section class="hero-section">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-6">
+        <div class="hero-content">
+          <h1 class="hero-title">L'avenir numérique commence ici</h1>
+          <p class="hero-subtitle">Notre approche ludique initie les enfants de 6 à 15 ans à la programmation à travers des projets créatifs encadrés par des experts.</p>
+          
+          <div class="d-flex flex-wrap gap-3">
+            <a href="Démarrer.html" class="btn btn-primary btn-lg">
+              <span class="mdi mdi-rocket"></span>
+              Démarrer l'aventure
+            </a>
+            
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-lg-6">
+        <img src="https://images.unsplash.com/photo-1584697964358-3e14ca57658b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" 
+             alt="Groupe d'enfants apprenant la programmation avec un enseignant" 
+             class="hero-image img-fluid rounded-4 shadow-lg"
+             loading="eager"
+             width="720"
+             height="480"
+             style="border: 2px solid rgba(255,255,255,0.2)">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Introduction à la programmation sous Home -->
+<div class="container my-5">
+  <div class="row align-items-center justify-content-center">
+    <div class="col-lg-6 mb-4 mb-lg-0">
+      <h2 class="mb-3 text-primary">La programmation, c'est quoi et pourquoi est-ce important ?</h2>
+      <p>
+        La programmation consiste à donner des instructions à un ordinateur pour qu'il réalise des tâches. C'est une compétence essentielle dans le monde moderne, car elle développe la logique, la créativité et la capacité à résoudre des problèmes. Apprendre à programmer permet aux enfants de mieux comprendre le monde numérique, d'innover, et de se préparer aux métiers du futur. Dans une société de plus en plus connectée, savoir coder, c'est aussi apprendre à penser différemment et à devenir acteur du changement.
+      </p>
+    </div>
+    <div class="col-lg-6">
+      <div class="ratio ratio-16x9 rounded overflow-hidden position-relative youtube-lazy" data-video-id="9E_4C6--2N8" style="cursor:pointer;">
+        <img src="https://img.youtube.com/vi/9E_4C6--2N8/hqdefault.jpg" alt="Pourquoi apprendre à programmer ?" class="w-100 h-100 object-fit-cover" style="object-fit:cover;">
+        <div style="position:absolute;top:0;left:0;width:100%;height:100%;display:flex;align-items:center;justify-content:center;pointer-events:none;">
+          <svg width="80" height="80" viewBox="0 0 80 80"><circle cx="40" cy="40" r="40" fill="rgba(0,0,0,0.5)"/><polygon points="32,24 60,40 32,56" fill="#fff"/></svg>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Section Méthode -->
+<section id="methode" class="py-5">
+  <div class="container py-5">
+    <div class="row justify-content-center align-items-center">
+      <div class="col-lg-10">
+        <h2 class="mb-4 text-center">Notre Méthode</h2>
+        <p class="lead text-center mb-5">Chez Le Petit Programmeur, nous croyons que l'apprentissage du code doit être ludique, progressif et adapté à chaque enfant. Notre méthode repose sur trois piliers :</p>
+        <div class="row g-4">
+          <div class="col-md-4">
+            <div class="p-4 rounded shadow-sm h-100 text-center methode-card methode-blue">
+              <span class="mdi mdi-puzzle methode-icon"></span>
+              <h3 class="h5 mt-3">Pédagogie par le jeu</h3>
+              <p class="mb-0">Des ateliers interactifs et des jeux pour stimuler la curiosité et l'envie d'apprendre.</p>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="p-4 rounded shadow-sm h-100 text-center methode-card methode-pink">
+              <span class="mdi mdi-lightbulb-on methode-icon"></span>
+              <h3 class="h5 mt-3">Projets créatifs</h3>
+              <p class="mb-0">Les enfants réalisent des projets concrets (jeux, animations, robots) pour donner du sens à leurs apprentissages.</p>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="p-4 rounded shadow-sm h-100 text-center methode-card methode-cyan">
+              <span class="mdi mdi-account-star methode-icon"></span>
+              <h3 class="h5 mt-3">Accompagnement personnalisé</h3>
+              <p class="mb-0">Un suivi individualisé pour s'adapter au rythme et aux besoins de chaque élève.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Section Programmes -->
+<section id="programmes" class="py-5 position-relative">
+  <div class="container py-5">
+    <div class="row justify-content-center mb-5">
+      <div class="col-lg-10 text-center">
+        <h2 class="mb-3 fw-bold display-5">Découvrez Nos Programmes</h2>
+        <p class="lead text-muted">Des parcours ludiques et progressifs pour chaque âge</p>
+      </div>
+    </div>
+    <div class="programme-steps-wrapper">
+      <div class="programme-steps">
+        <!-- Step 1 -->
+        <div class="programme-step step-blue">
+          <div class="programme-step-icon">
+            <img src="https://cdn-icons-png.flaticon.com/512/2103/2103633.png" alt="Débutant">
+          </div>
+          <h3 class="h5 mt-3 mb-1">Débutants</h3>
+          <div class="programme-age">6-9 ans</div>
+          <ul class="programme-list">
+            <li>Initiation aux bases</li>
+            <li>Scratch & Jeux ludiques</li>
+            <li>Robotique éducative</li>
+            <li>3h/semaine</li>
+          </ul>
+        </div>
+        <!-- Step 2 -->
+        <div class="programme-step step-pink">
+          <div class="programme-step-icon">
+            <img src="https://cdn-icons-png.flaticon.com/512/2103/2103655.png" alt="Intermédiaire">
+          </div>
+          <h3 class="h5 mt-3 mb-1">Intermédiaires</h3>
+          <div class="programme-age">10-12 ans</div>
+          <ul class="programme-list">
+            <li>Python & Développement Web</li>
+            <li>Applications simples</li>
+            <li>Initiation à l'IA</li>
+            <li>5h/semaine</li>
+          </ul>
+        </div>
+        <!-- Step 3 -->
+        <div class="programme-step step-cyan">
+          <div class="programme-step-icon">
+            <img src="https://cdn-icons-png.flaticon.com/512/2103/2103665.png" alt="Avancé">
+          </div>
+          <h3 class="h5 mt-3 mb-1">Avancés</h3>
+          <div class="programme-age">13-15 ans</div>
+          <ul class="programme-list">
+            <li>Programmation avancée</li>
+            <li>Applications mobiles</li>
+            <li>Robotique & IA</li>
+            <li>6h/semaine</li>
+          </ul>
+        </div>
+      </div>
+      <div class="programme-progress-bar">
+        <div class="bar"></div>
+        <div class="dot dot1"></div>
+        <div class="dot dot2"></div>
+        <div class="dot dot3"></div>
+      </div>
+    </div>
+    <!-- Ateliers spéciaux -->
+    
+    
+  </div>
+</section>
+
+<!-- Consultants Section (Équipe) -->
+<section id="equipe" class="py-5 border-top">
+  <div class="container">
+    <div class="row justify-content-center mb-4">
+      <div class="col-lg-8 text-center">
+        <h2 class="fw-bold mb-3">Équipe</h2>
+        <p class="text-muted">Cliquez sur une photo ou un nom pour voir plus d'informations</p>
+      </div>
+    </div>
+    <div class="row g-4 justify-content-center">
+      <!-- Consultant 1 -->
+      <div class="col-md-4 col-sm-6 text-center">
+        <div class="consultant-member" data-consultant="david" style="cursor:pointer;">
+          <img src="https://randomuser.me/api/portraits/men/32.jpg" class="rounded-circle shadow-lg consultant-img" alt="David Elaba" style="width:140px;height:140px;object-fit:cover;box-shadow:0 4px 16px rgba(67,97,238,0.12);transition:transform 0.2s;">
+          <h5 class="mt-3 mb-0">David Elaba</h5>
+        </div>
+      </div>
+      <!-- Consultant 2 -->
+      <div class="col-md-4 col-sm-6 text-center">
+        <div class="consultant-member" data-consultant="joury" style="cursor:pointer;">
+          <img src="https://randomuser.me/api/portraits/women/44.jpg" class="rounded-circle shadow-lg consultant-img" alt="Joury Hary" style="width:140px;height:140px;object-fit:cover;box-shadow:0 4px 16px rgba(247,37,133,0.12);transition:transform 0.2s;">
+          <h5 class="mt-3 mb-0">Joury Hary</h5>
+        </div>
+      </div>
+      <!-- Consultant 3 -->
+      <div class="col-md-4 col-sm-6 text-center">
+        <div class="consultant-member" data-consultant="charou" style="cursor:pointer;">
+          <img src="https://randomuser.me/api/portraits/men/65.jpg" class="rounded-circle shadow-lg consultant-img" alt="Charou Batchan" style="width:140px;height:140px;object-fit:cover;box-shadow:0 4px 16px rgba(76,201,240,0.12);transition:transform 0.2s;">
+          <h5 class="mt-3 mb-0">Charou Batchan</h5>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Consultant Modals -->
+<div id="consultant-modal-overlay" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(30,27,75,0.85);z-index:2000;align-items:center;justify-content:center;">
+  <div id="consultant-modal" style="background:#fff;border-radius:18px;max-width:400px;width:90vw;padding:2.5rem 2rem;text-align:center;box-shadow:0 8px 32px 0 rgba(67,97,238,0.18);position:relative;">
+    <button id="consultant-modal-close" style="position:absolute;top:1rem;right:1rem;background:none;border:none;font-size:2rem;line-height:1;color:#888;cursor:pointer;">&times;</button>
+    <div id="consultant-modal-content"></div>
+  </div>
+</div>
+
+<!-- Section Contact -->
+<section id="contact" class="py-5 bg-light">
+  <div class="container py-5">
+    <div class="row justify-content-center">
+      <div class="col-lg-8 text-center">
+        <h2 class="mb-4">Contactez-nous</h2>
+        <p class="lead mb-5">Vous avez des questions ? Notre équipe est là pour vous répondre.</p>
+        
+        <div class="row g-4">
+          <div class="col-md-4">
+            <div class="p-4 bg-white rounded shadow-sm">
+              <span class="mdi mdi-email text-primary" style="font-size: 2rem;"></span>
+              <h3 class="h5 mt-3">Email</h3>
+              <p class="mb-0">contact@lepetitprg.mr</p>
+            </div>
+          </div>
+          
+          <div class="col-md-4">
+            <div class="p-4 bg-white rounded shadow-sm">
+              <span class="mdi mdi-phone text-primary" style="font-size: 2rem;"></span>
+              <h3 class="h5 mt-3">Téléphone</h3>
+              <p class="mb-0">+222 43 22 33 56</p>
+            </div>
+          </div>
+          
+          <div class="col-md-4">
+            <div class="p-4 bg-white rounded shadow-sm">
+              <span class="mdi mdi-map-marker text-primary" style="font-size: 2rem;"></span>
+              <h3 class="h5 mt-3">Adresse</h3>
+              <p class="mb-0">Arafat, Noukchott</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Navbar scroll effect
+    window.addEventListener('scroll', function() {
+      const navbar = document.querySelector('.navbar');
+      if (window.scrollY > 50) {
+        navbar.classList.add('scrolled');
+      } else {
+        navbar.classList.remove('scrolled');
+      }
+    });
+
+    // Smooth scrolling for navigation
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        const targetId = this.getAttribute('href');
+        if (targetId === '#') return;
+        
+        const targetElement = document.querySelector(targetId);
+        if (targetElement) {
+          window.scrollTo({
+            top: targetElement.offsetTop - 80,
+            behavior: 'smooth'
+          });
+        }
+      });
+    });
+
+    // Méthode card click animation and scroll
+    document.querySelectorAll('.methode-card').forEach(card => {
+      card.addEventListener('click', function() {
+        document.querySelectorAll('.methode-card').forEach(c => c.classList.remove('active'));
+        this.classList.add('active');
+        this.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      });
+    });
+
+    // Lazy YouTube embed: play on click
+    document.querySelectorAll('.youtube-lazy').forEach(function(el) {
+      el.addEventListener('click', function() {
+        var videoId = el.getAttribute('data-video-id');
+        var iframe = document.createElement('iframe');
+        iframe.setAttribute('src', 'https://www.youtube.com/embed/' + videoId + '?autoplay=1');
+        iframe.setAttribute('title', 'Pourquoi apprendre à programmer ?');
+        iframe.setAttribute('allowfullscreen', '');
+        iframe.setAttribute('allow', 'autoplay');
+        iframe.className = 'w-100 h-100';
+        el.innerHTML = '';
+        el.appendChild(iframe);
+      }, { once: true });
+    });
+
+    // Consultant data
+    const consultantData = {
+      david: {
+        img: 'https://randomuser.me/api/portraits/men/32.jpg',
+        name: 'David Elaba',
+        role: 'Founder & Lead Trainer',
+        desc: 'Software engineer and education enthusiast, David has been guiding children in discovering coding for over 10 years.'
+      },
+      joury: {
+        img: 'https://randomuser.me/api/portraits/women/44.jpg',
+        name: 'Joury Hary',
+        role: 'Educational Coordinator',
+        desc: 'Active pedagogy specialist, Joury designs fun and age-appropriate workshops for all children.'
+      },
+      charou: {
+        img: 'https://randomuser.me/api/portraits/men/65.jpg',
+        name: 'Charou Batchan',
+        role: 'Robotics Facilitator',
+        desc: 'Expert in educational robotics, Charou leads workshops on robot programming and AI initiation.'
+      }
+    };
+
+    // Show modal on consultant click
+    document.querySelectorAll('.consultant-member').forEach(function(member) {
+      member.addEventListener('click', function() {
+        const key = member.getAttribute('data-consultant');
+        const data = consultantData[key];
+        if (data) {
+          document.getElementById('consultant-modal-content').innerHTML = `
+            <img src="${data.img}" alt="${data.name}" style="width:120px;height:120px;object-fit:cover;border-radius:50%;box-shadow:0 4px 16px rgba(67,97,238,0.12);margin-bottom:1.5rem;">
+            <h2 class="mb-1">${data.name}</h2>
+            <h5 class="text-primary mb-3">${data.role}</h5>
+            <p class="mb-0">${data.desc}</p>
+          `;
+          document.getElementById('consultant-modal-overlay').style.display = 'flex';
+        }
+      });
+    });
+    // Close modal
+    document.getElementById('consultant-modal-close').onclick = function() {
+      document.getElementById('consultant-modal-overlay').style.display = 'none';
+    };
+    // Close modal on overlay click (not modal itself)
+    document.getElementById('consultant-modal-overlay').addEventListener('click', function(e) {
+      if (e.target === this) {
+        this.style.display = 'none';
+      }
+    });
+  });
+</script>
+
+</body>
+</html>
